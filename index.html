@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand-drawn SVG House (Three.js + GLSL)</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #fdfaf3;
+      color: #5c4954;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .row { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    figure { margin: 0; text-align: center; }
+    figcaption { margin-top: 0.5rem; font-style: italic; }
+    canvas { display: block; }
+
+    #controls {
+      background: #f6efe2;
+      border: 1px solid #d9cfc0;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      max-width: 840px;
+      width: 100%;
+    }
+    #controls .sliders {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.35rem 1.5rem;
+    }
+    #controls .group {
+      grid-column: 1 / -1;
+      font-weight: bold;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-top: 0.5rem;
+    }
+    #controls .ctl {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr 3.2rem;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+    #controls .ctl input[type="range"] { width: 100%; accent-color: #5c4954; }
+    #controls .ctl output { text-align: right; font-variant-numeric: tabular-nums; }
+    #controls .buttons {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    #controls button {
+      font: inherit;
+      color: #fdfaf3;
+      background: #5c4954;
+      border: none;
+      border-radius: 5px;
+      padding: 0.35rem 1rem;
+      cursor: pointer;
+    }
+    #controls button.secondary { background: #a08e99; }
+    #controls label.upload {
+      font: inherit;
+      color: #fdfaf3;
+      background: #7a6a74;
+      border-radius: 5px;
+      padding: 0.35rem 1rem;
+      cursor: pointer;
+    }
+    #controls #status { font-style: italic; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Hand-drawn SVG House — GLSL edition</h1>
+
+  <!-- Same drawing twice: parsed into Three.js geometry and run through a
+       GLSL post-process shader on the left, plain <img> on the right -->
+  <div class="row">
+    <figure>
+      <canvas id="sketch" width="400" height="320"></canvas>
+      <figcaption id="caption-sketch">house.svg via SVGLoader + shader</figcaption>
+    </figure>
+    <figure>
+      <img id="plain" alt="Source SVG without effect" width="400" height="320">
+      <figcaption id="caption-plain">house.svg, no effect</figcaption>
+    </figure>
+  </div>
+
+  <div id="controls">
+    <div class="sliders"></div>
+    <div class="buttons">
+      <button id="save">Save</button>
+      <button id="copy" class="secondary">Copy JSON</button>
+      <button id="reset" class="secondary">Reset</button>
+      <label class="upload" for="file">Load SVG…</label>
+      <input id="file" type="file" accept=".svg,image/svg+xml" hidden>
+      <span id="status"></span>
+    </div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "three": "^0.170.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

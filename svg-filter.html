@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand-drawn SVG House (SVG filter version)</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #fdfaf3;
+      color: #5c4954;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .row { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    figure { margin: 0; text-align: center; }
+    figcaption { margin-top: 0.5rem; font-style: italic; }
+
+    /* Apply the SVG filter (defined in the hidden <svg> below) to one copy */
+    .sketch { filter: url(#handdrawn); }
+  </style>
+</head>
+<body>
+  <h1>Hand-drawn SVG House</h1>
+
+  <!-- Filter definition only; zero-size so it takes up no space.
+       Brush-pen look:
+       1. low-frequency warp  -> long, lazy waviness (not jittery scribble)
+       2. fine grain warp     -> slight organic roughness on edges
+       3. blur + alpha ramp   -> soft, rounded "wet ink" stroke edges -->
+  <svg width="0" height="0" aria-hidden="true">
+    <defs>
+      <filter id="handdrawn" x="-8%" y="-8%" width="116%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" result="warp"/>
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="10"
+                           xChannelSelector="R" yChannelSelector="G" result="warped"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.15" numOctaves="2" seed="3" result="grain"/>
+        <feDisplacementMap in="warped" in2="grain" scale="2.5" result="rough"/>
+        <feGaussianBlur in="rough" stdDeviation="0.9" result="soft"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="4" intercept="-0.9"/>
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Same file loaded twice: filtered vs. untouched -->
+  <div class="row">
+    <figure>
+      <img class="sketch" src="house.svg" alt="House with hand-drawn filter" width="400" height="320">
+      <figcaption>house.svg + filter</figcaption>
+    </figure>
+    <figure>
+      <img src="house.svg" alt="House without filter" width="400" height="320">
+      <figcaption>house.svg, no filter</figcaption>
+    </figure>
+  </div>
+</body>
+</html>
